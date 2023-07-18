@@ -1,0 +1,5 @@
+PORT=5001
+cnstr=mongodb://localhost:27017/knowledge-pool
+apikey=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
+ACC_TOKEN=joydeep123
+ACCESSTOKEN=abc
