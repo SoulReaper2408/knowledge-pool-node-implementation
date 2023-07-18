@@ -6,7 +6,7 @@ const {
   createques,
   getspques,
 } = require("../controllers/quescontroller");
-const validatetoken = require("../middleware/accesstokenhandler");
+const validatetoken = require("../middleware/accesstokenhandler2");
 // Define your routes here, for example:
 router.get("/allvis", validatetoken, getallvisques);
 router.get("/specvis", validatetoken, getspvisques);

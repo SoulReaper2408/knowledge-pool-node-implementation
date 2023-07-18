@@ -5,6 +5,7 @@ const Sub = require("../models/subtype");
 const response = require("../apicalls/apicallnewgen4");
 const delay = require("../delay");
 const Users = require("../models/usermodel");
+
 const getallvisques = asynchandler(async (req, res) => {
   let queslist = [];
   const result1 = await Coding.find();
@@ -57,6 +58,7 @@ const getallvisques = asynchandler(async (req, res) => {
     );
   }
 });
+
 
 const getspvisques = asynchandler(async (req, res) => {
   const { question_type, difficulty, subtopics, type } = req.body;
@@ -148,7 +150,7 @@ const getspvisques = asynchandler(async (req, res) => {
 const createques = asynchandler(async (req, res) => {
   const { question_type, difficulty, subtopics, number, typegen } = req.body;
   if (!question_type || !difficulty || !subtopics || !number || !typegen) {
-    res.status(404);
+    res.status(404).send("All fields are mandatory");
     throw new Error("Please fill all the fields.");
   }
   let queslist = [];

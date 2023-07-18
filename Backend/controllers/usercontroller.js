@@ -26,35 +26,64 @@ const register = asynchandler(async (req, res) => {
     
   }
 });
-const login = asynchandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+// const login = asynchandler(async (req, res) => {
+//   const { email, password } = req.body;
+//   if (!email || !password) {
+//     res.status(400).send("All fields are mandatory");
+    
+//   }
+//   const usercheck = await Users.findOne({ email: email });
+//   if (usercheck && (await bcrypt.compare(password, usercheck.password))) {
+//     const accesstoken = jwt.sign(
+//       {
+//         user: {
+//           username: usercheck.username,
+//           email: usercheck.email,
+//           id: usercheck.id,
+//         },
+//       },
+//       process.env.ACC_TOKEN,
+
+//       { expiresIn: "25m" }
+//     );
+//     process.env.ACCESSTOKEN = accesstoken;
+//     res.status(200).send(accesstoken);
+//     //httpreq(accesstoken);
+//   } else {
+//     res.status(401).send("Incorrect email id or password");
+//   }
+// });
+
+const login= asynchandler(async(req,res)=>{
+  const {email,password}=req.body;
+  if(!email||!password){
+      res.status(400);
+      throw new Error("All fields are mandatory");
   }
-  const usercheck = await Users.findOne({ email: email });
-  if (usercheck && (await bcrypt.compare(password, usercheck.password))) {
-    const accesstoken = jwt.sign(
+  const usercheck=await Users.findOne({"email":email});
+  if (usercheck&&await bcrypt.compare(password,usercheck.password))
       {
-        user: {
-          username: usercheck.username,
-          email: usercheck.email,
-          id: usercheck.id,
-        },
-      },
-      process.env.ACC_TOKEN,
-
-      { expiresIn: "25m" }
-    );
-    process.env.ACCESSTOKEN = accesstoken;
-    res.json(accesstoken);
-    //httpreq(accesstoken);
-  } else {
-    res.status(401);
-    throw new Error("Incorrect email id or password");
+          const accesstoken=jwt.sign({
+              user:{
+                  username:usercheck.username,
+                  email:usercheck.email,
+                  id:usercheck.id
+                   },
+              },
+              
+                  process.env.ACC_TOKEN,
+              
+              {expiresIn:"25m"}
+          );
+          res.status(200).send(accesstoken);
+          req.headers.authorization = `Bearer ${accesstoken}`;
+      }
+      else{
+      res.status(401);
+      throw new Error("Incorrect email id or password");
   }
-});
-
+  });
+  
 const current = asynchandler(async (req, res) => {
   res.json(req.user); //req.user=decoded.user in accesstokenhandler
 });
